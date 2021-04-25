@@ -1,17 +1,6 @@
-/*
-Initializated 17/07/2020
-Last update 17/007/2020
-done by @josselito_rios
-#25ce25
-*/
-
-/*----------------Importing Retro Font-------------------*/
+/* This is a desktop only project, no need of media */
 @import url(https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap);
 
-
-
-
-/*---------HTML reset------*/
 *{
     margin: 0;
     padding: 0;
@@ -56,6 +45,13 @@ p{
     font-size: 0.8rem;
 }
 
+a{
+    text-decoration: none;
+    color: snow;
+    font-weight: bold;
+    border-bottom: white 2px dotted;
+}
+
 
 
 /*--------------All web Design-----------------*/
@@ -74,18 +70,9 @@ header{
     max-height: 40px;
 }
 
-nav{
-    margin: 80px 10px;
-    /* background-color: blue; */
-    display: flex;
-    align-items: baseline;
-    justify-content: space-around;
-}
-
 section{
     display: flex;
     flex-direction: column;
-    /* background-color: grey; */
 }
 
 footer{
@@ -99,7 +86,16 @@ footer{
 
 canvas{
     position: relative;
-    top: 20px;
-    left: 50px;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+}
+
+.grid-item {
+    display: block;
+    border: none;
+    text-align: center;
+}

@@ -20,7 +20,7 @@ function colorCircle(centerX,centerY, radius, fillColor) {
 
 function colorText(showWords, textX,textY, fillColor) {
 	canvasContext.textBaseline = "middle";
-  canvasContext.textAlign = "center";
+  	canvasContext.textAlign = "center";
 	canvasContext.fillStyle = fillColor;
 	canvasContext.fillText(showWords, textX, textY);
 }

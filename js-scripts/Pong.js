@@ -1,84 +1,66 @@
-/*
-There is a .js file named "GrapichsCommon"
-where I put all the functions that draws shapes
-*/
-
-var canvas;
-var canvasContext;
+let canvas;
+let canvasContext;
 
 //ball variables
-var ballX = 100;
-var ballY = 100;
-var ballSpeedX = 9;
-var ballSpeedY = 6;
+let ballX = 100;
+let ballY = 100;
+let ballSpeedX = 9;
+let ballSpeedY = 6;
 
 //paddle variables
-var leftPaddleY;
-var rightPaddleY = 30;
+let leftPaddleY;
+let rightPaddleY = 30;
 const PADDLE_HEIGHT = 100;
 const PADDLE_THICKNESS = 8;
 
 //Score variables
-var winCondition = false;
-var pointDone = false;
-var scorePl1 = 0;
-var scorePl2 = 0;
+let winCondition = false;
+let pointDone = false;
+let scorePl1 = 0;
+let scorePl2 = 0;
 const W_SCORE = 3;
 
-var startGame = true;
+let startGame = true;
 
-//Sound fx variables
-var ballHittingSfx;
-var pointDoneSfx;
 
+window.onload = function() {
+    start();
+}
 
 function calculateMousePos(evt){
-    var rect = canvas.getBoundingClientRect();
-    var root = document.documentElement;
-    var mouseX = evt.clientX - rect.left - root.scrollLeft;
-    var mouseY = evt.clientY - rect.top - root.scrollTop;
+    let rect = canvas.getBoundingClientRect();
+    let root = document.documentElement;
+    let mouseX = evt.clientX - rect.left - root.scrollLeft;
+    let mouseY = evt.clientY - rect.top - root.scrollTop;
     return{
         x:mouseX,
         y:mouseY
     }
 }
 
-
-
-
-
-window.onload = function start(){
-    //First, loads the game sounds
-    ballHittingSfx = document.getElementById("ballHittingSfx");
-    pointDoneSfx = document.getElementById("pointDoneSfx");
-
+function start() {
     //Then, takes de canvas element
     canvas = document.getElementById("retroGames");
     canvasContext = canvas.getContext("2d");
     setTimeout(textLoaded,200); // only for loading the text on canvas
-    var fps = 30;
+    let fps = 30;
 
     setInterval(function(){
         drawEverything();
         moveEverything();
     }, 1000 / fps);
-
     
     canvas.addEventListener("mousedown", restartGame);
     
-
     canvas.addEventListener("mousemove", 
         function(evt){
-            var mousePos = calculateMousePos(evt);
+            let mousePos = calculateMousePos(evt);
             leftPaddleY = mousePos.y-(PADDLE_HEIGHT/2);
     });
-    
 }
 
-
-
 function paddleBehaviour(){
-    var rightPaddleYCenter = rightPaddleY+(PADDLE_HEIGHT/2);
+    let rightPaddleYCenter = rightPaddleY+(PADDLE_HEIGHT/2);
 
     if(rightPaddleYCenter < ballY-15){
         rightPaddleY += getRandomFloat(7,9);
@@ -102,13 +84,11 @@ function moveEverything(){
     if (ballX <= PADDLE_THICKNESS){
         if(ballY > leftPaddleY && ballY <= leftPaddleY+PADDLE_HEIGHT){
             ballSpeedX = -ballSpeedX;
-            var deltaY = ballY-(leftPaddleY+ PADDLE_HEIGHT/2); //when the ball hits the paddle, the bouncing changes
+            let deltaY = ballY-(leftPaddleY+ PADDLE_HEIGHT/2); //when the ball hits the paddle, the bouncing changes
             ballSpeedY = deltaY * 0.3;
-            ballHittingSfx.play();
         }
         else{
             scorePl2++;
-            pointDoneSfx.play();
             ballReset();
         }
     }
@@ -116,13 +96,11 @@ function moveEverything(){
     if (ballX >= canvas.width-PADDLE_THICKNESS){
         if(ballY > rightPaddleY && ballY <= rightPaddleY+PADDLE_HEIGHT){
             ballSpeedX = -ballSpeedX;
-            var deltaY = ballY-(rightPaddleY + PADDLE_HEIGHT/2);
+            let deltaY = ballY-(rightPaddleY + PADDLE_HEIGHT/2);
             ballSpeedY = deltaY * 0.3;
-            ballHittingSfx.play();
         }
         else{
             scorePl1++;
-            pointDoneSfx.play();
             ballReset(); 
         }
     }
@@ -130,11 +108,9 @@ function moveEverything(){
     //ball movement
     if(ballY < 0){
         ballSpeedY = -ballSpeedY;
-        ballHittingSfx.play();
     }
     if(ballY > canvas.height){
         ballSpeedY = -ballSpeedY;
-        ballHittingSfx.play();
     }
     
 }
@@ -149,8 +125,8 @@ function restartGame(evt){
     }
 }
 
-function initialScreenSetUp(){
-    if(startGame){
+function initialScreenSetUp() {
+    if (startGame) {
         colorText('Get Ready!', canvas.width/2,canvas.height/3, "white");
         colorText("the game will start soon", canvas.width/2,canvas.height-150, "white");
         startGame = false;
@@ -158,7 +134,7 @@ function initialScreenSetUp(){
 }
 
 
-function ballReset(){
+function ballReset() {
     
     let ballSpeedReset = ballSpeedX;
     scenarioReset();
@@ -194,7 +170,7 @@ function scenarioReset(){
 }
 
 
-///////////////creating all the visual content////////////////
+// Creating all the Visual Content
 
 
 function drawEverything(){
@@ -204,8 +180,8 @@ function drawEverything(){
     
     
     //Drawing the net
-    for(var i=0; i<canvas.height; i+=26){
-        colorRect(canvas.width/2-1,i, 3,13, 'white');
+    for(let i=0; i<canvas.height; i+=26){
+        colorRect(canvas.width/2-1,i, 3,13, 'blue');
     }
 
     //paddles: left / right
@@ -223,10 +199,10 @@ function drawEverything(){
 }
 
 
-function gameOverScreen(){
+function gameOverScreen() {
     //Rendering the Game Over Screen
     if (winCondition){
-        var winner = (scorePl1 > scorePl2)? "Human Player Won :)" : "computer won o_O";
+        let winner = (scorePl1 > scorePl2)? "Human Player Won :)" : "computer won o_O";
         
         colorRect(0,0, canvas.width, canvas.height, "black");
         canvasContext.fillStyle = "white";
@@ -242,6 +218,6 @@ function getRandomFloat(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-function textLoaded(){
+function textLoaded() {
     canvasContext.font= "20px 'Press Start 2P'";
 }
