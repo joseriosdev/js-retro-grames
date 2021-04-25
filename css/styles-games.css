@@ -85,7 +85,8 @@ footer{
 }
 
 canvas{
-    position: relative;
+    display: block;
+    margin: 1rem auto;
 }
 
 .grid {

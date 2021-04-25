@@ -1,37 +1,37 @@
-var canvas, canvasContext;
+let canvas, canvasContext;
 
 //ball variables
-var ballX = 100;
-var ballY = 100;
-var ballSpeedX = 4;
-var ballSpeedY = 4;
+let ballX = 100;
+let ballY = 100;
+let ballSpeedX = 7;
+let ballSpeedY = 7;
 
 //paddle variables
-var paddleX = 50;
-const PADDLE_WIDTH = 70;
+let paddleX = 50;
+const PADDLE_WIDTH = 100;
 const CENTER_OF_PADDLE = PADDLE_WIDTH/2;
-const PADDLE_THICKNESS = 10;
+const PADDLE_THICKNESS = 15;
 const PADDLE_DISTANCE_FROM_BOTTOM = 50;
 
 //Tracks variables
-const TRACK_COLUMS = 8;
+const TRACK_COLUMS = 13;
 const TRACK_ROWS = 6;
-const TRACK_W = 40;
-const TRACK_H = 20;
+const TRACK_W = 60;
+const TRACK_H = 30;
 const TRACK_GAPS = 2;
-var trackGrid = new Array(TRACK_COLUMS * TRACK_ROWS);
-var remainingTracks = 0;
+let trackGrid = new Array(TRACK_COLUMS * TRACK_ROWS);
+let remainingTracks = 0;
 
 
-var winCondition = false;
+let winCondition = false;
 
 
-var mouseX, mouseY;
+let mouseX, mouseY;
 
 
 function calculateMousePos(evt){
-    var rect = canvas.getBoundingClientRect();
-    var root = document.documentElement;
+    let rect = canvas.getBoundingClientRect();
+    let root = document.documentElement;
     mouseX = evt.clientX - rect.left - root.scrollLeft;
     mouseY = evt.clientY - rect.top - root.scrollTop;
 
@@ -40,7 +40,7 @@ function calculateMousePos(evt){
 
 function trackReset(){
     remainingTracks = 0;
-    var i;
+    let i;
     for (i=0;i<2*TRACK_COLUMS;i++){
         trackGrid[i] = false;
     }
@@ -57,7 +57,7 @@ function trackReset(){
 window.onload = function(){
     canvas = document.getElementById("retroGames");
     canvasContext = canvas.getContext("2d");
-    var fps = 30;
+    let fps = 30;
 
     setInterval(function(){
         drawEverything();
@@ -93,7 +93,7 @@ function ballMove(){
 function isTrackAtRowCol (col, row){
     if (col >= 0 && col < TRACK_COLUMS &&
         row >= 0 && row < TRACK_ROWS){
-        var trackIndexUnderCoord = rowColToArrayIndex(col, row);
+        let trackIndexUnderCoord = rowColToArrayIndex(col, row);
         return trackGrid[trackIndexUnderCoord];
     }else {
         return false;
@@ -103,9 +103,9 @@ function isTrackAtRowCol (col, row){
 
 
 function ballTrackCollision(){
-    var ballTrackCol =  Math.floor(ballX / TRACK_W);
-    var ballTrackRow =  Math.floor(ballY / TRACK_H);
-    var trackIndexUnderBall = rowColToArrayIndex(ballTrackCol, ballTrackRow);
+    let ballTrackCol =  Math.floor(ballX / TRACK_W);
+    let ballTrackRow =  Math.floor(ballY / TRACK_H);
+    let trackIndexUnderBall = rowColToArrayIndex(ballTrackCol, ballTrackRow);
 
     if (ballTrackCol >= 0 && ballTrackCol < TRACK_COLUMS &&
         ballTrackRow >= 0 && ballTrackRow < TRACK_ROWS){
@@ -114,14 +114,14 @@ function ballTrackCollision(){
             trackGrid[trackIndexUnderBall] = false;
             remainingTracks--;
 
-            var prevBallX = ballX - ballSpeedX;
-            var prevBallY = ballY - ballSpeedY;
-            var prevTrackCol = Math.floor(prevBallX / TRACK_W);
-            var prevTrackRow = Math.floor(prevBallY / TRACK_H);
+            let prevBallX = ballX - ballSpeedX;
+            let prevBallY = ballY - ballSpeedY;
+            let prevTrackCol = Math.floor(prevBallX / TRACK_W);
+            let prevTrackRow = Math.floor(prevBallY / TRACK_H);
 
-            var bothTestFailed = true;
+            let bothTestFailed = true;
             if (prevTrackCol != ballTrackCol){
-                var adjTrackSide = rowColToArrayIndex(prevTrackCol, ballTrackRow);
+                let adjTrackSide = rowColToArrayIndex(prevTrackCol, ballTrackRow);
 
                 if(trackGrid[adjTrackSide] == false){
                     ballSpeedX *= -1;
@@ -129,7 +129,7 @@ function ballTrackCollision(){
                 }
             }
             if (prevTrackRow != ballTrackRow){
-                var adjTrackSide = rowColToArrayIndex(prevTrackCol, prevTrackRow);
+                let adjTrackSide = rowColToArrayIndex(prevTrackCol, prevTrackRow);
 
                 if(trackGrid[adjTrackSide] == false){
                     ballSpeedY *= -1;
@@ -151,13 +151,13 @@ function ballTrackCollision(){
 function paddleCollider(){
     console.log(remainingTracks);
 
-    var paddleTop = canvas.height-PADDLE_DISTANCE_FROM_BOTTOM;
-    var paddleBottom = paddleTop+PADDLE_THICKNESS;
-    var paddleLeft = paddleX;
-    var paddleRight = paddleLeft+PADDLE_WIDTH;
+    let paddleTop = canvas.height-PADDLE_DISTANCE_FROM_BOTTOM;
+    let paddleBottom = paddleTop+PADDLE_THICKNESS;
+    let paddleLeft = paddleX;
+    let paddleRight = paddleLeft+PADDLE_WIDTH;
     if( ballY>paddleTop && ballY<paddleBottom && ballX > paddleLeft && ballX < paddleRight){
             ballSpeedY *= -1;
-            var ballBouncingChange = ballX-(paddleX+CENTER_OF_PADDLE);
+            let ballBouncingChange = ballX-(paddleX+CENTER_OF_PADDLE);
             ballSpeedX = ballBouncingChange*0.35;  
             
             if (remainingTracks == 0){
@@ -165,8 +165,6 @@ function paddleCollider(){
                 trackReset();
             }
     }
-
-
 }
 
 
@@ -179,8 +177,6 @@ function moveEverything(){
     ballTrackCollision();
     paddleCollider();    
 }
-
-
 
 
 //////Reseting the Ball - Score - Game///////
@@ -209,11 +205,11 @@ function drawEverything(){
     canvasContext.font = "14px Verdana";
 
     //background rectangle
-    creatingRect(0,0, canvas.width, canvas.height, "black");
+    colorRect(0,0, canvas.width, canvas.height, "black");
 
     //Rendering the Game Over Screen
     /*if (winCondition){
-        var winner = (scorePl1 > scorePl2)? " Nice human :) U have won " : " computer, u won ";
+        let winner = (scorePl1 > scorePl2)? " Nice human :) U have won " : " computer, u won ";
         canvasContext.fillStyle = "white";
         canvasContext.fillText("Game Over | " + winner, canvas.width/8, 30);
         canvasContext.fillText("Play Again", canvas.width/4, canvas.height-100);
@@ -223,10 +219,10 @@ function drawEverything(){
     
 
     //paddle
-    creatingRect(paddleX,canvas.height-PADDLE_DISTANCE_FROM_BOTTOM, PADDLE_WIDTH,PADDLE_THICKNESS, "blue");
+    colorRect(paddleX,canvas.height-PADDLE_DISTANCE_FROM_BOTTOM, PADDLE_WIDTH,PADDLE_THICKNESS, "blue");
 
     //creating the ball
-    creatingCirc(ballX,ballY,5, "white");
+    colorCircle(ballX,ballY,5, "white");
 
     //creating the trackGrid
     creatingTracks();
@@ -234,39 +230,22 @@ function drawEverything(){
     //Score////
     //canvasContext.fillText(scorePl1, 25, 50);
     //canvasContext.fillText(scorePl2, canvas.width - 50, 50);
-    var mouseTrackCol = Math.floor(mouseX / TRACK_W);
-    var mouseTrackRow = Math.floor(mouseY / TRACK_H);
-    var trackIndexUnderMouse = rowColToArrayIndex(mouseTrackCol, mouseTrackRow);
-    creatingText(mouseTrackCol+","+mouseTrackRow+":"+trackIndexUnderMouse, mouseX,mouseY, "white");
+    let mouseTrackCol = Math.floor(mouseX / TRACK_W);
+    let mouseTrackRow = Math.floor(mouseY / TRACK_H);
+    let trackIndexUnderMouse = rowColToArrayIndex(mouseTrackCol, mouseTrackRow);
+    //colorText(mouseTrackCol+","+mouseTrackRow+":"+trackIndexUnderMouse, mouseX,mouseY, "white");
 
 }// END DRAW ALL
 
 
-function creatingCirc(x,y,r,color){
-    canvasContext.beginPath();
-    canvasContext.fillStyle = color;
-    canvasContext.arc(x, y, r, 0, 2*Math.PI, false);
-    canvasContext.fill();
-}
-
-function creatingRect(x,y, w,h,color){
-    canvasContext.fillStyle = color;
-    canvasContext.fillRect(x,y, w,h);
-}
-
-function creatingText(content, xpos,ypos, color){
-    canvasContext.fillStyle = color;
-    canvasContext.fillText(content, xpos, ypos);
-}
-
 function creatingTracks(){
-    for (var trackRow=0;trackRow<TRACK_ROWS;trackRow++){
-        for (var trackCol=0;trackCol<TRACK_COLUMS;trackCol++){
+    for (let trackRow=0;trackRow<TRACK_ROWS;trackRow++){
+        for (let trackCol=0;trackCol<TRACK_COLUMS;trackCol++){
 
-            var arrayIndex = rowColToArrayIndex(trackCol,trackRow);
+            let arrayIndex = rowColToArrayIndex(trackCol,trackRow);
 
             if(trackGrid[arrayIndex]){
-                creatingRect(TRACK_W*trackCol,TRACK_H*trackRow, TRACK_W-TRACK_GAPS,TRACK_H-TRACK_GAPS, "red");
+                colorRect(TRACK_W*trackCol,TRACK_H*trackRow, TRACK_W-TRACK_GAPS,TRACK_H-TRACK_GAPS, "red");
             }
         }
     }
