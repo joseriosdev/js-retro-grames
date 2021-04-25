@@ -5,7 +5,6 @@ const TURN_RATE = 0.06;
 const MIN_SPEED_TO_TURN = 0.5;
 
 class Car {
-
 	constructor (name){
 		this.name = name;
 		this.x = 75;
@@ -24,10 +23,7 @@ class Car {
 		this.controlKeyRight;
 		this.controlKeyDown;
 		this.controlKeyLeft;
-	}
-	
-
-	
+	}	
 
 	setupInput (upKey, rightKey, downKey, leftKey) {
 		this.controlKeyUp = upKey;

@@ -1,8 +1,8 @@
-var carPic = document.createElement('img');
-var otherCarPic = document.createElement('img');
-var trackPics = [];
+let carPic = document.createElement('img');
+let otherCarPic = document.createElement('img');
+let trackPics = [];
 
-var picsToLoad = 0; // set automatically based on imageList in loadImages()
+let picsToLoad = 0; // set automatically based on imageList in loadImages()
 
 function countLoadedImagesAndLaunchIfReady() {
 	picsToLoad--;
@@ -14,7 +14,7 @@ function countLoadedImagesAndLaunchIfReady() {
 
 function beginLoadingImage(imgVar, fileName) {
 	imgVar.onload = countLoadedImagesAndLaunchIfReady;
-	imgVar.src = '../graphics/'+fileName;
+	imgVar.src = 'graphics/'+fileName;
 }
 
 function loadImageForTrackCode(trackCode, fileName) {
@@ -23,7 +23,7 @@ function loadImageForTrackCode(trackCode, fileName) {
 }
 
 function loadImages() {
-	var imageList = [
+	let imageList = [
 		{varName: carPic, theFile: 'redCar.png'},
 		{varName: otherCarPic, theFile: 'blueCar.png'},
 
@@ -35,7 +35,7 @@ function loadImages() {
 
 	picsToLoad = imageList.length;
 
-	for(var i=0;i<imageList.length;i++) {
+	for(let i=0;i<imageList.length;i++) {
 		if(imageList[i].varName != undefined) {
 			beginLoadingImage(imageList[i].varName, imageList[i].theFile);
 		} else {
